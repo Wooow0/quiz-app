@@ -108,6 +108,7 @@
             padding: 30px;
             border-radius: 15px;
             margin-bottom: 20px;
+            overflow: hidden;
         }
 
         .question-header {
@@ -144,17 +145,21 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            width: 100%;
         }
 
         .option {
             display: flex;
             align-items: center;
+            width: 100%;
+            min-width: 0;
             padding: 15px 20px;
             background: white;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
+            box-sizing: border-box;
         }
 
         .option:hover {
@@ -214,6 +219,7 @@
             width: 20px;
             height: 20px;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         .option-label {
@@ -221,6 +227,8 @@
             color: #333;
             cursor: pointer;
             flex: 1;
+            max-width: 100%;
+            word-break: break-word;
         }
 
         .progress-bar {
@@ -1375,10 +1383,12 @@
                     }
                 }
                 
+                const displayOption = String(option).replace(/^[A-D][.．]\s*/, '');
+                
                 div.innerHTML = `
                     <input type="${inputType}" name="answer" value="${letter}" 
                            ${isSelected ? 'checked' : ''} ${locked ? 'disabled' : ''}>
-                    <label class="option-label">${letter}. ${option}</label>
+                    <label class="option-label">${letter}. ${displayOption}</label>
                 `;
                 
                 div.onclick = () => selectOption(index, q.isMulti);
@@ -1801,7 +1811,7 @@
                     <div><strong>第 ${index + 1} 题</strong> <span style="color: #764ba2;">[${q.type}]</span></div>
                     <div style="margin-top: 5px; color: #333;">${q.question}</div>
                     <div style="margin-top: 5px; color: #666; font-size: 0.9em;">
-                        ${q.options.map((opt, i) => String.fromCharCode(65 + i) + '. ' + opt).join('　　')}
+                        ${q.options.map((opt, i) => String.fromCharCode(65 + i) + '. ' + String(opt).replace(/^[A-D][.．]\s*/, '')).join('　　')}
                     </div>
                     <div style="margin-top: 5px; color: #11998e; font-size: 0.9em;">答案：${q.answer}</div>
                 `;
@@ -1963,7 +1973,7 @@
                     </div>
                     <div style="color:#333; margin-bottom:8px;">${item.question}</div>
                     <div style="color:#666; font-size:0.9em;">
-                        ${item.options.map((opt, i) => String.fromCharCode(65 + i) + '. ' + opt).join('　　')}
+                        ${item.options.map((opt, i) => String.fromCharCode(65 + i) + '. ' + String(opt).replace(/^[A-D][.．]\s*/, '')).join('　　')}
                     </div>
                     <div style="margin-top:8px; font-size:0.9em;">
                         <span style="color:#dc3545;">❌ 你的答案：${item.userAnswer || '未作答'}</span>　
